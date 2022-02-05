@@ -34,6 +34,8 @@
   "dependencies": {
     "@babel/runtime": "^7.3.1",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
+    "bootstrap": "^5.0.2",
+    "bootstrap-vue": "^2.21.2",
     "easings-css": "^1.0.0",
     "fuzzysearch": "^1.0.3",
     "is-promise": "^2.1.0",

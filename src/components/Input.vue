@@ -211,6 +211,19 @@
         }
       },
 
+      getSelectedValue() {
+        let ee = ''
+        try {
+          ee = this.$parent.getSelectedValue()
+        } catch (error) {
+        }
+        return ee
+      },
+
+      onMouseover() {
+        this.$parent.$parent.$emit('setSelectedValue', this.getSelectedValue())
+      },
+
       renderInputContainer() {
         const { instance } = this
         const props = {}
@@ -264,6 +277,7 @@
             onBlur={this.onBlur}
             onKeydown={this.onKeyDown}
             onMousedown={this.onMouseDown}
+            onMouseover={this.onMouseover}
           />
         )
       },

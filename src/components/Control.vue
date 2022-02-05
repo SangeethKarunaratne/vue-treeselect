@@ -1,13 +1,24 @@
 <script>
+  import Vue from 'vue'
+  import { BootstrapVue } from 'bootstrap-vue'
   import { onLeftClick, isPromise } from '../utils'
   import SingleValue from './SingleValue'
   import MultiValue from './MultiValue'
   import DeleteIcon from './icons/Delete'
   import ArrowIcon from './icons/Arrow'
+  import 'bootstrap/dist/css/bootstrap.css'
+  import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+  Vue.use(BootstrapVue)
 
   export default {
     name: 'vue-treeselect--control',
     inject: [ 'instance' ],
+
+    data: () => ({
+      toShowOnHover: false,
+      selectedValue: '',
+    }),
 
     computed: {
       /* eslint-disable valid-jsdoc */
@@ -54,7 +65,17 @@
       /* eslint-enable valid-jsdoc */
     },
 
+    mounted() {
+      this.$on('setSelectedValue', this.setSelectedValue)
+    },
+
     methods: {
+      mouseEnter() {
+        this.toShowOnHover = !this.toShowOnHover
+      },
+      mouseLeave() {
+        this.toShowOnHover = false
+      },
       renderX() {
         const { instance } = this
         const title = instance.multiple ? instance.clearAllText : instance.clearValueText
@@ -93,7 +114,7 @@
          * class, since we are targeting to support IE9 without the
          * need of any polyfill.
          */
-
+        this.setSelectedValue('')
         evt.stopPropagation()
         evt.preventDefault()
 
@@ -135,6 +156,14 @@
           </div>
         )
       },
+
+      setSelectedValue(val) {
+        this.selectedValue = val
+      },
+
+      getSelectedValue() {
+        return this.selectedValue
+      },
     },
 
     render() {
@@ -142,7 +171,16 @@
       const ValueContainer = instance.single ? SingleValue : MultiValue
 
       return (
-        <div class="vue-treeselect__control" onMousedown={instance.handleMouseDown}>
+        <div
+          class="vue-treeselect__control"
+          onMousedown={instance.handleMouseDown}
+          v-b-tooltip={{
+          title: this.getSelectedValue(),
+          placement: 'top',
+          delay: 500,
+          offset: 0,
+          customClass: 'custom-tooltip-hover',
+          trigger: 'hover focus' }}>
           <ValueContainer ref="value-container" />
           {this.renderX()}
           {this.renderArrow()}
