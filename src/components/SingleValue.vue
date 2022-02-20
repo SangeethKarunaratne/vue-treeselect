@@ -10,10 +10,16 @@
         const { instance } = this
         const node = instance.selectedNodes[0]
 
+        this.$parent.$emit('setSelectedValue', node.label)
         const customValueLabelRenderer = instance.$scopedSlots['value-label']
         return customValueLabelRenderer
           ? customValueLabelRenderer({ node })
           : node.label
+      },
+      getSelectedValue() {
+        const { instance } = this
+        const node = instance.selectedNodes[0]
+        return node.label
       },
     },
     render() {
@@ -23,7 +29,7 @@
       return renderValueContainer([
         shouldShowValue && (
           <div class="vue-treeselect__single-value">
-            { this.renderSingleValueLabel() }
+            { this.renderSingleValueLabel()}
           </div>
         ),
         <Placeholder />,
